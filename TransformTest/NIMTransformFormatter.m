@@ -62,14 +62,14 @@
     NSValue *theValue = [[NIMTransformFormatter cache] objectForKey:self.format];
     if (theValue != NULL)
         {
-        return([theValue CATransform3DValue]);
+        return [theValue CATransform3DValue];
         }
 
     CATransform3D theTransform;
     NSError *theError = NULL;
     if ([self _transform:&theTransform error:&theError] == NO)
         {
-        NSLog(@"%@", theError);
+        [[NSException exceptionWithName:@"TODO" reason:@"TODO" userInfo:NULL] raise];
         }
 
     if ([self.format isEqualToString:self.formattedString] == YES)
@@ -77,7 +77,7 @@
         [[NIMTransformFormatter cache] setObject:[NSValue valueWithCATransform3D:theTransform] forKey:self.format];
         }
 
-    return(theTransform);
+    return theTransform;
     }
 
 - (CGAffineTransform)CGAffineTransform
@@ -87,7 +87,7 @@
         {
         [[NSException exceptionWithName:@"TODO" reason:@"TODO" userInfo:NULL] raise];
         }
-    return(CATransform3DGetAffineTransform(theTransform));
+    return CATransform3DGetAffineTransform(theTransform);
     }
 
 #pragma mark -
@@ -142,7 +142,7 @@
                     {
                     *outError = [NSError errorWithDomain:@"TODO" code:-1 userInfo:NULL];
                     }
-                return(NO);
+                return NO;
                 }
             }
         else if ([theScanner scanString:@"|" intoString:NULL] == NO)
@@ -156,9 +156,8 @@
         *outTransform = theTransform;
         }
 
-    return(YES);
+    return YES;
     }
-
 
 
 #pragma mark -
@@ -171,26 +170,26 @@
     if ([inScanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&theName] == NO)
         {
         inScanner.scanLocation = theSavedLocation;
-        return(NO);
+        return NO;
         }
 
     if ([inScanner scanString:@"(" intoString:NULL] == NO)
         {
         inScanner.scanLocation = theSavedLocation;
-        return(NO);
+        return NO;
         }
 
     NSArray *theArray = NULL;
     if ([self scanner:inScanner scanArrayOfNumbers:&theArray] == NO)
         {
         inScanner.scanLocation = theSavedLocation;
-        return(NO);
+        return NO;
         }
 
     if ([inScanner scanString:@")" intoString:NULL] == NO)
         {
         inScanner.scanLocation = theSavedLocation;
-        return(NO);
+        return NO;
         }
 
     if (outFunction != NULL)
@@ -198,7 +197,7 @@
         *outFunction = @{ @"name": theName, @"parameters": theArray };
         }
 
-    return(YES);
+    return YES;
     }
 
 - (BOOL)scanner:(NSScanner *)inScanner scanArrayOfNumbers:(NSArray **)outNumbers
@@ -236,7 +235,7 @@
         *outNumbers = theArray;
         }
 
-    return(theResult);
+    return theResult;
     }
 
 @end
