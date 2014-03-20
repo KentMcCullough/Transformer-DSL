@@ -107,7 +107,7 @@ static NSCache *gCache = NULL;
         if ([self scanner:theScanner scanFunction:&theFunction] == YES)
             {
             NSString *theName = theFunction[@"name"];
-            if ([theName isEqualToString:@"translate"])
+            if ([theName isEqualToString:@"translate"] || [theName isEqualToString:@"t"])
                 {
                 NSArray *theParameters = theFunction[@"parameters"];
                 theTransform = CATransform3DTranslate(theTransform,
@@ -116,7 +116,7 @@ static NSCache *gCache = NULL;
                     theParameters.count >= 3 ? [theParameters[2] doubleValue] : 0.0
                     );
                 }
-            else if ([theName isEqualToString:@"scale"])
+            else if ([theName isEqualToString:@"scale"] | [theName isEqualToString:@"s"])
                 {
                 NSArray *theParameters = theFunction[@"parameters"];
                 theTransform = CATransform3DScale(theTransform,
@@ -125,7 +125,7 @@ static NSCache *gCache = NULL;
                     theParameters.count >= 3 ? [theParameters[2] doubleValue] : 1.0
                     );
                 }
-            else if ([theName isEqualToString:@"rotate"])
+            else if ([theName isEqualToString:@"rotate"] | [theName isEqualToString:@"r"])
                 {
                 NSArray *theParameters = theFunction[@"parameters"];
                 theTransform = CATransform3DRotate(theTransform,
@@ -134,6 +134,10 @@ static NSCache *gCache = NULL;
                     [theParameters[2] doubleValue],
                     [theParameters[3] doubleValue]
                     );
+                }
+            else if ([theName isEqualToString:@"identity"] | [theName isEqualToString:@"i"])
+                {
+                // Nothing to do here. Identity is essentially a nop.
                 }
             else
                 {

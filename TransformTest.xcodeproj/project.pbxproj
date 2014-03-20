@@ -6,11 +6,46 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		45FFB8AD18DB67CF00EB68F1 /* All */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 45FFB8AE18DB67CF00EB68F1 /* Build configuration list for PBXAggregateTarget "All" */;
+			buildPhases = (
+			);
+			dependencies = (
+				45FFB8B218DB67E500EB68F1 /* PBXTargetDependency */,
+			);
+			name = All;
+			productName = All;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		45D4113018C90EA400613276 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45D4112F18C90EA400613276 /* Foundation.framework */; };
 		45D4113318C90EA400613276 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D4113218C90EA400613276 /* main.m */; };
 		45D4113F18C90EC100613276 /* NIMTransformFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D4113E18C90EC100613276 /* NIMTransformFormatter.m */; };
+		45FFB89E18DB67C200EB68F1 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FFB89D18DB67C200EB68F1 /* XCTest.framework */; };
+		45FFB8A418DB67C200EB68F1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 45FFB8A218DB67C200EB68F1 /* InfoPlist.strings */; };
+		45FFB8A618DB67C200EB68F1 /* Unit_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 45FFB8A518DB67C200EB68F1 /* Unit_Tests.m */; };
+		45FFB8B318DB67F300EB68F1 /* NIMTransformFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D4113E18C90EC100613276 /* NIMTransformFormatter.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		45FFB8A818DB67C200EB68F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 45D4112418C90EA400613276 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 45D4112B18C90EA400613276;
+			remoteInfo = TransformTest;
+		};
+		45FFB8B118DB67E500EB68F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 45D4112418C90EA400613276 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 45D4112B18C90EA400613276;
+			remoteInfo = TransformTest;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		45D4112A18C90EA400613276 /* CopyFiles */ = {
@@ -31,8 +66,14 @@
 		45D4113518C90EA400613276 /* TransformTest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TransformTest-Prefix.pch"; sourceTree = "<group>"; };
 		45D4113D18C90EC100613276 /* NIMTransformFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIMTransformFormatter.h; sourceTree = "<group>"; };
 		45D4113E18C90EC100613276 /* NIMTransformFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIMTransformFormatter.m; sourceTree = "<group>"; };
-		45FFB89518DB56C200EB68F1 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
 		45FFB89618DB56C900EB68F1 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = SOURCE_ROOT; };
+		45FFB89718DB675800EB68F1 /* README.markdown */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.markdown; sourceTree = SOURCE_ROOT; };
+		45FFB89C18DB67C200EB68F1 /* Unit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Unit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		45FFB89D18DB67C200EB68F1 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		45FFB8A118DB67C200EB68F1 /* Unit Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Unit Tests-Info.plist"; sourceTree = "<group>"; };
+		45FFB8A318DB67C200EB68F1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		45FFB8A518DB67C200EB68F1 /* Unit_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Unit_Tests.m; sourceTree = "<group>"; };
+		45FFB8A718DB67C200EB68F1 /* Unit Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Unit Tests-Prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +85,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		45FFB89918DB67C200EB68F1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45FFB89E18DB67C200EB68F1 /* XCTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -51,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				45D4113118C90EA400613276 /* TransformTest */,
+				45FFB89F18DB67C200EB68F1 /* Unit Tests */,
 				45D4112E18C90EA400613276 /* Frameworks */,
 				45D4112D18C90EA400613276 /* Products */,
 			);
@@ -60,6 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				45D4112C18C90EA400613276 /* TransformTest */,
+				45FFB89C18DB67C200EB68F1 /* Unit Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -68,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				45D4112F18C90EA400613276 /* Foundation.framework */,
+				45FFB89D18DB67C200EB68F1 /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -75,7 +127,7 @@
 		45D4113118C90EA400613276 /* TransformTest */ = {
 			isa = PBXGroup;
 			children = (
-				45FFB89518DB56C200EB68F1 /* README.md */,
+				45FFB89718DB675800EB68F1 /* README.markdown */,
 				45FFB89618DB56C900EB68F1 /* LICENSE */,
 				45D4113218C90EA400613276 /* main.m */,
 				45D4113D18C90EC100613276 /* NIMTransformFormatter.h */,
@@ -89,6 +141,25 @@
 			isa = PBXGroup;
 			children = (
 				45D4113518C90EA400613276 /* TransformTest-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		45FFB89F18DB67C200EB68F1 /* Unit Tests */ = {
+			isa = PBXGroup;
+			children = (
+				45FFB8A518DB67C200EB68F1 /* Unit_Tests.m */,
+				45FFB8A018DB67C200EB68F1 /* Supporting Files */,
+			);
+			path = "Unit Tests";
+			sourceTree = "<group>";
+		};
+		45FFB8A018DB67C200EB68F1 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				45FFB8A118DB67C200EB68F1 /* Unit Tests-Info.plist */,
+				45FFB8A218DB67C200EB68F1 /* InfoPlist.strings */,
+				45FFB8A718DB67C200EB68F1 /* Unit Tests-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -113,6 +184,24 @@
 			productReference = 45D4112C18C90EA400613276 /* TransformTest */;
 			productType = "com.apple.product-type.tool";
 		};
+		45FFB89B18DB67C200EB68F1 /* Unit Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 45FFB8AA18DB67C200EB68F1 /* Build configuration list for PBXNativeTarget "Unit Tests" */;
+			buildPhases = (
+				45FFB89818DB67C200EB68F1 /* Sources */,
+				45FFB89918DB67C200EB68F1 /* Frameworks */,
+				45FFB89A18DB67C200EB68F1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				45FFB8A918DB67C200EB68F1 /* PBXTargetDependency */,
+			);
+			name = "Unit Tests";
+			productName = "Unit Tests";
+			productReference = 45FFB89C18DB67C200EB68F1 /* Unit Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -121,6 +210,11 @@
 			attributes = {
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = schwa;
+				TargetAttributes = {
+					45FFB89B18DB67C200EB68F1 = {
+						TestTargetID = 45D4112B18C90EA400613276;
+					};
+				};
 			};
 			buildConfigurationList = 45D4112718C90EA400613276 /* Build configuration list for PBXProject "TransformTest" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -134,10 +228,23 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				45FFB8AD18DB67CF00EB68F1 /* All */,
 				45D4112B18C90EA400613276 /* TransformTest */,
+				45FFB89B18DB67C200EB68F1 /* Unit Tests */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		45FFB89A18DB67C200EB68F1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45FFB8A418DB67C200EB68F1 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		45D4112818C90EA400613276 /* Sources */ = {
@@ -149,7 +256,40 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		45FFB89818DB67C200EB68F1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45FFB8B318DB67F300EB68F1 /* NIMTransformFormatter.m in Sources */,
+				45FFB8A618DB67C200EB68F1 /* Unit_Tests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		45FFB8A918DB67C200EB68F1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 45D4112B18C90EA400613276 /* TransformTest */;
+			targetProxy = 45FFB8A818DB67C200EB68F1 /* PBXContainerItemProxy */;
+		};
+		45FFB8B218DB67E500EB68F1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 45D4112B18C90EA400613276 /* TransformTest */;
+			targetProxy = 45FFB8B118DB67E500EB68F1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		45FFB8A218DB67C200EB68F1 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				45FFB8A318DB67C200EB68F1 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		45D4113818C90EA400613276 /* Debug */ = {
@@ -240,6 +380,56 @@
 			};
 			name = Release;
 		};
+		45FFB8AB18DB67C200EB68F1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Unit Tests/Unit Tests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "Unit Tests/Unit Tests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		45FFB8AC18DB67C200EB68F1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Unit Tests/Unit Tests-Prefix.pch";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "Unit Tests/Unit Tests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+		45FFB8AF18DB67CF00EB68F1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		45FFB8B018DB67CF00EB68F1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -260,6 +450,22 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		45FFB8AA18DB67C200EB68F1 /* Build configuration list for PBXNativeTarget "Unit Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				45FFB8AB18DB67C200EB68F1 /* Debug */,
+				45FFB8AC18DB67C200EB68F1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		45FFB8AE18DB67CF00EB68F1 /* Build configuration list for PBXAggregateTarget "All" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				45FFB8AF18DB67CF00EB68F1 /* Debug */,
+				45FFB8B018DB67CF00EB68F1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

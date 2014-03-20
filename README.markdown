@@ -77,6 +77,10 @@ Creating complex transformations with multiple, nested functions is a pain. You 
 
 Creating a transformation from using this domain specific language is extremely easy. The operations aren't nested so you can easily read the operations from left to right. You can easily reorder operations and insert operations anywhere into the operation list.
 
+## What else could this be used for?
+
+One use for this would be if you wanted to store transformations in data (in your plist or your JSON files). Having a string based representation of transforms would be quite handy. For maximuse usefulness we'd need to also support going from a matrix to a string. See the Further Ideas section
+
 ## Performance?
 
 This DSL is a _lot_ slower than doing the operations by hand:
@@ -101,4 +105,4 @@ BSD 2-Clause see LICENSE file.
 * More optimisation. Pretty sure I can get the performance of parametised expressions down by parsing the expression, caching that and then replacing the terms during later calls. I can also improve the general perform by dropping down to C.
 * Named parameters: translate(z = -100)
 * Use of degree symbol ° in rotations.
-
+* Write code to support going from any arbitrary matrix to a string. See [Computing Euler angles from a rotation matrix](http://www.soi.city.ac.uk/~sbbh653/publications/euler.pdf) for more information. Or support a matrix3D() operation.
