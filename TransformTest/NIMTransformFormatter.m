@@ -239,7 +239,7 @@ static NSCache *gCache = NULL;
 
 @end
 
-CATransform3D CATransform3DWithFormat(NSString *inFormat, ...)
+CATransform3D CATransform3DMakeWithFormat(NSString *inFormat, ...)
     {
     va_list argList;
     va_start(argList, inFormat);

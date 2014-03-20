@@ -22,4 +22,4 @@
 
 @end
 
-extern CATransform3D CATransform3DWithFormat(NSString *inFormat, ...);
+extern CATransform3D CATransform3DMakeWithFormat(NSString *inFormat, ...);

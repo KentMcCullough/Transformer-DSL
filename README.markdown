@@ -15,11 +15,11 @@ Write code like this:
 
     #import "NIMTransformFormatter.h"
 
-    CATransform3D theTransform = CATransform3DWithFormat(@"translate(1,2) | scale(10,10,1.0)");
+    CATransform3D theTransform = CATransform3DMakeWithFormat(@"translate(1,2) | scale(10,10,1.0)");
 
 Or even shorter:
 
-    CATransform3D theTransform = CATransform3DWithFormat(@"t(1,2) | s(10,10,1.0)");
+    CATransform3D theTransform = CATransform3DMakeWithFormat(@"t(1,2) | s(10,10,1.0)");
 
 Or if you have a reason to use the class directly.:
 
@@ -79,7 +79,7 @@ Let's shorten this even more
 
 Obviously you won't be passing in constants to every transformation. So the transformation strings are first passed through sprintf formatting. This allows you to write code that looks like:
 
-    CATransform3D *theTransform = CATransform3DWithFormat(@"translate(%f,%f) | scale(10,10,1.0)", X, Y);
+    CATransform3D *theTransform = CATransform3DMakeWithFormat(@"translate(%f,%f) | scale(10,10,1.0)", X, Y);
 
 ## But why?
 
