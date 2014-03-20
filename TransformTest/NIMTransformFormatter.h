@@ -20,8 +20,6 @@
 - (CATransform3D)CATransform3D;
 - (CGAffineTransform)CGAffineTransform;
 
-- (NSString *)asSourceCode;
-
 @end
 
 extern CATransform3D CATransform3DWithFormat(NSString *inFormat, ...);

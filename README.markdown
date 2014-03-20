@@ -116,3 +116,5 @@ BSD 2-Clause see LICENSE file.
 * Named parameters: translate(z = -100)
 * Use of degree symbol ° in rotations.
 * Write code to support going from any arbitrary matrix to a string. See [Computing Euler angles from a rotation matrix](http://www.soi.city.ac.uk/~sbbh653/publications/euler.pdf) for more information. Or support a matrix3D() operation.
+* Implement an "asSourceCode" method that returns the source for the transformations - either as a series of nested functions or as the final transformation with parameters pre computed.
+* Pass in a base transformation - instead of working off the implied base transformation (thanks @ntakayama)

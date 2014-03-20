@@ -88,11 +88,6 @@ static NSCache *gCache = NULL;
     return(CATransform3DGetAffineTransform(theTransform));
     }
 
-- (NSString *)asSourceCode
-    {
-    return(NULL);
-    }
-
 #pragma mark -
 
 - (BOOL)_transform:(CATransform3D *)outTransform error:(NSError **)outError
