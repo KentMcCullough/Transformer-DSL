@@ -74,6 +74,7 @@
 		45FFB8A318DB67C200EB68F1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		45FFB8A518DB67C200EB68F1 /* Unit_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Unit_Tests.m; sourceTree = "<group>"; };
 		45FFB8A718DB67C200EB68F1 /* Unit Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Unit Tests-Prefix.pch"; sourceTree = "<group>"; };
+		45FFB8B418DB6D0E00EB68F1 /* Transformer-DSL.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Transformer-DSL.podspec"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +130,7 @@
 			children = (
 				45FFB89718DB675800EB68F1 /* README.markdown */,
 				45FFB89618DB56C900EB68F1 /* LICENSE */,
+				45FFB8B418DB6D0E00EB68F1 /* Transformer-DSL.podspec */,
 				45D4113218C90EA400613276 /* main.m */,
 				45D4113D18C90EC100613276 /* NIMTransformFormatter.h */,
 				45D4113E18C90EC100613276 /* NIMTransformFormatter.m */,
