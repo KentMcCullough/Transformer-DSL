@@ -10,17 +10,18 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-static NSCache *gCache = NULL;
-
 @interface NIMTransformFormatter ()
 @property (readwrite, nonatomic, copy) NSString *format;
 @property (readwrite, nonatomic, copy) NSString *formattedString;
 @end
 
+#pragma mark -
+
 @implementation NIMTransformFormatter
 
 + (NSCache *)cache
     {
+    static NSCache *gCache = NULL;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         gCache = [[NSCache alloc] init];
