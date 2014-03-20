@@ -10,6 +10,10 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+NSString *const kNIMTransformDSLErrorDomain = @"kNIMTransformDSLErrorDomain";
+NSString *const kNIMTransformDSLParseException = @"kNIMTransformDSLParseException";
+NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffineException";
+
 @interface NIMTransformFormatter ()
 @property (readwrite, nonatomic, copy) NSString *format;
 @property (readwrite, nonatomic, copy) NSString *formattedString;
@@ -75,7 +79,7 @@
     NSError *theError = NULL;
     if ([self _transform:&theTransform error:&theError] == NO)
         {
-        [[NSException exceptionWithName:@"TODO" reason:@"TODO" userInfo:NULL] raise];
+        [[NSException exceptionWithName:kNIMTransformDSLParseException reason:@"Failed to parse format string" userInfo:NULL] raise];
         }
 
     if ([self.format isEqualToString:self.formattedString] == YES)
@@ -91,7 +95,7 @@
     CATransform3D theTransform = [self CATransform3D];
     if (!CATransform3DIsAffine(theTransform))
         {
-        [[NSException exceptionWithName:@"TODO" reason:@"TODO" userInfo:NULL] raise];
+        [[NSException exceptionWithName:kNIMTransformDSLNotAffineException reason:@"Cannot convert non-afine transformation to an affine one." userInfo:NULL] raise];
         }
     return CATransform3DGetAffineTransform(theTransform);
     }
@@ -146,7 +150,7 @@
                 {
                 if (outError)
                     {
-                    *outError = [NSError errorWithDomain:@"TODO" code:-1 userInfo:NULL];
+                    *outError = [NSError errorWithDomain:kNIMTransformDSLErrorDomain code:-1 userInfo:NULL];
                     }
                 return NO;
                 }
