@@ -87,6 +87,15 @@
     XCTAssert(!CATransform3DIsEqual(theDSLTransform, theManualTransform));
     }
 
+- (void)testRelativeScale
+    {
+    CATransform3D theBaseTransform = CATransform3DMakeScale(100, 100, 100);
+    CATransform3D theDSLTransform = CATransform3DWithFormat(theBaseTransform, @"scale(10, 10, 10)");
+    CATransform3D theManualTransform = CATransform3DScale(theBaseTransform, 10, 10, 10);
+    XCTAssert(CATransform3DIsEqual(theDSLTransform, theManualTransform));
+    }
+
+
 // TODO write more unit tests. For format strings and for inferred parameters. Also cached values.
 
 #pragma mark -

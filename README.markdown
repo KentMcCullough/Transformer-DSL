@@ -24,7 +24,11 @@ Or even shorter:
 Or if you have a reason to use the class directly.:
 
     CATransform3D theTransform = [[NIMTransformFormatter formatterWithFormat:@"t(1,2) | s(10,10,1.0)"] CATransform3D];
-    
+
+And finally if you want to transform an existing CATransform3D you can use this form (thanks [@ntakayama](http://twitter.com/ntakayama) for the suggestion.):
+
+    someLayer.transform = CATransform3DWithFormat(someLayer.transform, @"t(1,2) | s(10,10,1.0)");
+
 ## What's the syntax look like?
 
 Currently it looks (in theory) like this in Backus–Naur Form:
@@ -51,7 +55,7 @@ This returns the identity matrix scaled by 10.0 X and 10.0 Y and 1.0 Z.
 
     identity() | scale(10, 10, 1)
     
-But the identity matrix is implied. So the previous format is equivalent to the this one:
+By default the identity matrix is implied. So the previous format is equivalent to the this one. Note if you pass in your own base transform then the operations will be relative to that transform.
 
     scale(10, 10, 1)
 
@@ -117,4 +121,3 @@ BSD 2-Clause see LICENSE file.
 * Use of degree symbol ° in rotations.
 * Write code to support going from any arbitrary matrix to a string. See [Computing Euler angles from a rotation matrix](http://www.soi.city.ac.uk/~sbbh653/publications/euler.pdf) for more information. Or support a matrix3D() operation.
 * Implement an "asSourceCode" method that returns the source for the transformations - either as a series of nested functions or as the final transformation with parameters pre computed.
-* Pass in a base transformation - instead of working off the implied base transformation (thanks @ntakayama)

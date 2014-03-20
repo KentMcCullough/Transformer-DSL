@@ -18,8 +18,11 @@
 - (instancetype)initWithFormat:(NSString *)inFormat arguments:(va_list)argList;
 
 - (CATransform3D)CATransform3D;
+- (CATransform3D)CATransform3DWithBaseTransform:(CATransform3D)inBaseTransform;
+
 - (CGAffineTransform)CGAffineTransform;
 
 @end
 
 extern CATransform3D CATransform3DMakeWithFormat(NSString *inFormat, ...);
+extern CATransform3D CATransform3DWithFormat(CATransform3D inTransform, NSString *inFormat, ...);

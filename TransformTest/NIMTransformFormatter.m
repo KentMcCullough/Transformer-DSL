@@ -19,12 +19,13 @@
 
 @implementation NIMTransformFormatter
 
-+ (NSCache *)cache
++ (NSCache *)_cache
     {
     static NSCache *gCache = NULL;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         gCache = [[NSCache alloc] init];
+        gCache.countLimit = 512; // abitrary but relatively small.
         });
     return gCache;
     }
@@ -59,13 +60,18 @@
 
 - (CATransform3D)CATransform3D
     {
-    NSValue *theValue = [[NIMTransformFormatter cache] objectForKey:self.format];
+    return [self CATransform3DWithBaseTransform:CATransform3DIdentity];
+    }
+
+- (CATransform3D)CATransform3DWithBaseTransform:(CATransform3D)inBaseTransform
+    {
+    NSValue *theValue = [[NIMTransformFormatter _cache] objectForKey:self.format];
     if (theValue != NULL)
         {
         return [theValue CATransform3DValue];
         }
 
-    CATransform3D theTransform;
+    CATransform3D theTransform = inBaseTransform;
     NSError *theError = NULL;
     if ([self _transform:&theTransform error:&theError] == NO)
         {
@@ -74,7 +80,7 @@
 
     if ([self.format isEqualToString:self.formattedString] == YES)
         {
-        [[NIMTransformFormatter cache] setObject:[NSValue valueWithCATransform3D:theTransform] forKey:self.format];
+        [[NIMTransformFormatter _cache] setObject:[NSValue valueWithCATransform3D:theTransform] forKey:self.format];
         }
 
     return theTransform;
@@ -92,9 +98,9 @@
 
 #pragma mark -
 
-- (BOOL)_transform:(CATransform3D *)outTransform error:(NSError **)outError
+- (BOOL)_transform:(CATransform3D *)ioTransform error:(NSError **)outError
     {
-    CATransform3D theTransform = CATransform3DIdentity;
+    CATransform3D theTransform = *ioTransform;
 
     NSScanner *theScanner = [NSScanner scannerWithString:self.formattedString];
 
@@ -151,9 +157,9 @@
             }
         }
 
-    if (outTransform)
+    if (ioTransform)
         {
-        *outTransform = theTransform;
+        *ioTransform = theTransform;
         }
 
     return YES;
@@ -247,4 +253,13 @@ CATransform3D CATransform3DMakeWithFormat(NSString *inFormat, ...)
     NIMTransformFormatter *theFormatter = [[NIMTransformFormatter alloc] initWithFormat:inFormat arguments:argList];
     va_end(argList);
     return([theFormatter CATransform3D]);
+    }
+
+CATransform3D CATransform3DWithFormat(CATransform3D inTransform, NSString *inFormat, ...)
+    {
+    va_list argList;
+    va_start(argList, inFormat);
+    NIMTransformFormatter *theFormatter = [[NIMTransformFormatter alloc] initWithFormat:inFormat arguments:argList];
+    va_end(argList);
+    return([theFormatter CATransform3DWithBaseTransform:inTransform]);
     }
