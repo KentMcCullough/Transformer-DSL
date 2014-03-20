@@ -13,7 +13,21 @@ Instead of writing code like:
     
 Write code like this:
 
-    CATransform3D *theTransform = CATransform3DWithFormat(@"translate(1,2) | scale(10,10,1.0)");
+    #import "NIMTransformFormatter.h"
+
+    CATransform3D theTransform = CATransform3DWithFormat(@"translate(1,2) | scale(10,10,1.0)");
+
+Or even shorter:
+
+    #import "NIMTransformFormatter.h"
+
+    CATransform3D theTransform = CATransform3DWithFormat(@"t(1,2) | s(10,10,1.0)");
+
+Or if you have a reason to use the class directly.:
+
+    #import "NIMTransformFormatter.h"
+
+    CATransform3D theTransform = [[NIMTransformFormatter formatterWithFormat:@"t(1,2) | ss(10,10,1.0)"] CATransform3D];
     
 ## What's the syntax look like?
 
