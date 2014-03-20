@@ -1,3 +1,4 @@
 language: objective-c
-xcode_project: 'TransformTest.xcodeproj'
-xcode_scheme: All
+script:
+  - xctool -project 'TransformTest.xcodeproj' -scheme 'All' ONLY_ACTIVE_ARCH=NO
+  - xctool test -project 'TransformTest.xcodeproj' -scheme 'Unit Tests' ONLY_ACTIVE_ARCH=NO
