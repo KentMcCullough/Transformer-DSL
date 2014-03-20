@@ -15,7 +15,7 @@ Write code like this:
 
     CATransform3D *theTransform = CATransform3DWithFormat(@"translate(1,2) | scale(10,10,1.0)");
     
-## What's the syntax look like.
+## What's the syntax look like?
 
 Currently it looks (in theory) like this in Backus–Naur Form:
 
