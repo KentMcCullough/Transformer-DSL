@@ -19,12 +19,13 @@ static NSCache *gCache = NULL;
 
 @implementation NIMTransformFormatter
 
-+ (void)initialize
++ (NSCache *)cache
     {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         gCache = [[NSCache alloc] init];
         });
+    return gCache;
     }
 
 + (instancetype)formatterWithFormat:(NSString *)inFormat, ...
@@ -57,7 +58,7 @@ static NSCache *gCache = NULL;
 
 - (CATransform3D)CATransform3D
     {
-    NSValue *theValue = [gCache objectForKey:self.format];
+    NSValue *theValue = [[NIMTransformFormatter cache] objectForKey:self.format];
     if (theValue != NULL)
         {
         return([theValue CATransform3DValue]);
@@ -72,7 +73,7 @@ static NSCache *gCache = NULL;
 
     if ([self.format isEqualToString:self.formattedString] == YES)
         {
-        [gCache setObject:[NSValue valueWithCATransform3D:theTransform] forKey:self.format];
+        [[NIMTransformFormatter cache] setObject:[NSValue valueWithCATransform3D:theTransform] forKey:self.format];
         }
 
     return(theTransform);
