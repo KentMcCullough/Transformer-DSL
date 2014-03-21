@@ -99,14 +99,14 @@ One use for this would be if you wanted to store transformations in data (in you
 
 This DSL is a _lot_ slower than doing the operations by hand:
 
-    2014-03-20 10:34:49.807 TransformTest[40682:303] Time for non-parametized expression: 0.117223
-    2014-03-20 10:34:50.840 TransformTest[40682:303] Time for parametized expression: 1.03206
-    2014-03-20 10:34:50.842 TransformTest[40682:303] Time for raw CA function calls: 0.00161803
-    2014-03-20 10:34:50.843 TransformTest[40682:303] Slow-down factor for non-parametrized: 72.4481
-    2014-03-20 10:34:50.843 TransformTest[40682:303] Slow-down factor for parametrized: 637.852
+    2014-03-20 18:20:21.168 TransformTest[59794:303] Time for non-parametized expression: 0.15035
+    2014-03-20 18:20:21.571 TransformTest[59794:303] Time for parametized expression: 0.400879
+    2014-03-20 18:20:21.574 TransformTest[59794:303] Time for raw CA function calls: 0.00237203
+    2014-03-20 18:20:21.574 TransformTest[59794:303] Slow-down factor for non-parametrized: 63.3846
+    2014-03-20 18:20:21.575 TransformTest[59794:303] Slow-down factor for parametrized: 169.003
     Program ended with exit code: 0
 
-This means using a format string without parameters is about 72 times slower than performing the transformation using CA functions. And using a format string with parameters is about 600 times slower. The reason for the difference in performance is that non-parametised expressions are easily cached - and the format is only parsed once.
+This means using a format string without parameters is about 60 times slower than performing the transformation using CA functions. And using a format string with parameters is about 170 times slower. The reason for the difference in performance is that non-parametised expressions are easily cached - and the format is only parsed once.
 
 Is this too slow? Well it depends what you're doing with your transformations. If you're just using these transformations to compute the before and after values of an animation it might be ok. If you're doing your own animations and computing transformations at 60 fps it might be too slow.
 
@@ -116,7 +116,7 @@ BSD 2-Clause see LICENSE file.
 
 ## Further ideas
 
-* More optimisation. Pretty sure I can get the performance of parametised expressions down by parsing the expression, caching that and then replacing the terms during later calls. I can also improve the general perform by dropping down to C.
+* More optimisation. Improve the general performance by dropping down to C.
 * Named parameters: translate(z = -100)
 * Use of degree symbol ° in rotations.
 * Write code to support going from any arbitrary matrix to a string. See [Computing Euler angles from a rotation matrix](http://www.soi.city.ac.uk/~sbbh653/publications/euler.pdf) for more information. Or support a matrix3D() operation.

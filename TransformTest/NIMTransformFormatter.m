@@ -16,14 +16,14 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
 
 @interface NIMTransformFormatter ()
 @property (readwrite, nonatomic, copy) NSString *format;
-@property (readwrite, nonatomic, copy) NSString *formattedString;
+@property (readwrite, nonatomic, copy) NSArray *arguments;
 @end
 
 #pragma mark -
 
 @implementation NIMTransformFormatter
 
-+ (NSCache *)_cache
++ (NSCache *)_transformsCache
     {
     static NSCache *gCache = NULL;
     static dispatch_once_t onceToken;
@@ -33,6 +33,18 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
         });
     return gCache;
     }
+
++ (NSCache *)_operationsCache
+    {
+    static NSCache *gCache = NULL;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        gCache = [[NSCache alloc] init];
+        gCache.countLimit = 512; // abitrary but relatively small.
+        });
+    return gCache;
+    }
+
 
 + (instancetype)formatterWithFormat:(NSString *)inFormat, ...
     {
@@ -56,8 +68,26 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
     {
     if ((self = [super init]) != NULL)
         {
-        _format = inFormat;
-        _formattedString = [[NSString alloc] initWithFormat:_format arguments:argList];
+        _format = [inFormat copy];
+
+        NSMutableArray *theArguments = [NSMutableArray array];
+        NSRange theSearchRange = { 0, [inFormat length] };
+        NSRange theFoundRange;
+        do
+            {
+            theFoundRange = [inFormat rangeOfString:@"%f" options:0 range:theSearchRange];
+            NSUInteger theEnd = theFoundRange.location + theFoundRange.length;
+            theSearchRange = (NSRange){ .location = theEnd, .length = [inFormat length] - theEnd };
+
+            if (theFoundRange.location != NSNotFound)
+                {
+                CGFloat theArgument = va_arg(argList, CGFloat);
+                [theArguments addObject:@(theArgument)];
+                }
+            }
+        while (theFoundRange.location != NSNotFound);
+
+        _arguments = [theArguments copy];
         }
     return self;
     }
@@ -69,7 +99,7 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
 
 - (CATransform3D)CATransform3DWithBaseTransform:(CATransform3D)inBaseTransform
     {
-    NSValue *theValue = [[NIMTransformFormatter _cache] objectForKey:self.format];
+    NSValue *theValue = [[NIMTransformFormatter _transformsCache] objectForKey:self.format];
     if (theValue != NULL)
         {
         return [theValue CATransform3DValue];
@@ -82,9 +112,9 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
         [[NSException exceptionWithName:kNIMTransformDSLParseException reason:@"Failed to parse format string" userInfo:NULL] raise];
         }
 
-    if ([self.format isEqualToString:self.formattedString] == YES)
+    if (self.arguments.count == 0)
         {
-        [[NIMTransformFormatter _cache] setObject:[NSValue valueWithCATransform3D:theTransform] forKey:self.format];
+        [[NIMTransformFormatter _transformsCache] setObject:[NSValue valueWithCATransform3D:theTransform] forKey:self.format];
         }
 
     return theTransform;
@@ -106,58 +136,72 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
     {
     CATransform3D theTransform = *ioTransform;
 
-    NSScanner *theScanner = [NSScanner scannerWithString:self.formattedString];
-
-    while ([theScanner isAtEnd] == NO)
+    NSArray *theFunctions = [[NIMTransformFormatter _operationsCache] objectForKey:self.format];
+    if (theFunctions == NULL)
         {
-        NSDictionary *theFunction = NULL;
-        if ([self scanner:theScanner scanFunction:&theFunction] == YES)
+        NSScanner *theScanner = [NSScanner scannerWithString:self.format];
+        [self scanner:theScanner scanFunctions:&theFunctions];
+        [[NIMTransformFormatter _operationsCache] setObject:theFunctions forKey:self.format];
+        }
+
+    __block NSUInteger nextArgument = 0;
+    CGFloat (^GetNextArgument)(id inParameter) = ^(id inParameter) {
+        if ([inParameter isKindOfClass:[NSNumber class]] == YES)
             {
-            NSString *theName = theFunction[@"name"];
-            if ([theName isEqualToString:@"translate"] || [theName isEqualToString:@"t"])
-                {
-                NSArray *theParameters = theFunction[@"parameters"];
-                theTransform = CATransform3DTranslate(theTransform,
-                    theParameters.count >= 1 ? [theParameters[0] doubleValue] : 0.0,
-                    theParameters.count >= 2 ? [theParameters[1] doubleValue] : 0.0,
-                    theParameters.count >= 3 ? [theParameters[2] doubleValue] : 0.0
-                    );
-                }
-            else if ([theName isEqualToString:@"scale"] | [theName isEqualToString:@"s"])
-                {
-                NSArray *theParameters = theFunction[@"parameters"];
-                theTransform = CATransform3DScale(theTransform,
-                    theParameters.count >= 1 ? [theParameters[0] doubleValue] : 1.0,
-                    theParameters.count >= 2 ? [theParameters[1] doubleValue] : 1.0,
-                    theParameters.count >= 3 ? [theParameters[2] doubleValue] : 1.0
-                    );
-                }
-            else if ([theName isEqualToString:@"rotate"] | [theName isEqualToString:@"r"])
-                {
-                NSArray *theParameters = theFunction[@"parameters"];
-                theTransform = CATransform3DRotate(theTransform,
-                    [theParameters[0] doubleValue],
-                    [theParameters[1] doubleValue],
-                    [theParameters[2] doubleValue],
-                    [theParameters[3] doubleValue]
-                    );
-                }
-            else if ([theName isEqualToString:@"identity"] | [theName isEqualToString:@"i"])
-                {
-                // Nothing to do here. Identity is essentially a nop.
-                }
-            else
-                {
-                if (outError)
-                    {
-                    *outError = [NSError errorWithDomain:kNIMTransformDSLErrorDomain code:-1 userInfo:NULL];
-                    }
-                return NO;
-                }
+            return([inParameter doubleValue]);
             }
-        else if ([theScanner scanString:@"|" intoString:NULL] == NO)
+        else if (nextArgument < self.arguments.count)
             {
-            break;
+            return([self.arguments[nextArgument++] doubleValue]);
+            }
+        else
+            {
+            NSParameterAssert(0);
+            return(0.0);
+            }
+        };
+
+    for (NSDictionary *theFunction in theFunctions)
+        {
+        NSString *theName = theFunction[@"name"];
+        NSArray *theParameters = theFunction[@"parameters"];
+
+        if ([theName isEqualToString:@"translate"] || [theName isEqualToString:@"t"])
+            {
+            theTransform = CATransform3DTranslate(theTransform,
+                theParameters.count >= 1 ? GetNextArgument(theParameters[0]) : 0.0,
+                theParameters.count >= 2 ? GetNextArgument(theParameters[1]) : 0.0,
+                theParameters.count >= 3 ? GetNextArgument(theParameters[2]) : 0.0
+                );
+            }
+        else if ([theName isEqualToString:@"scale"] | [theName isEqualToString:@"s"])
+            {
+            theTransform = CATransform3DScale(theTransform,
+                theParameters.count >= 1 ? GetNextArgument(theParameters[0]) : 1.0,
+                theParameters.count >= 2 ? GetNextArgument(theParameters[1]) : 1.0,
+                theParameters.count >= 3 ? GetNextArgument(theParameters[2]) : 1.0
+                );
+            }
+        else if ([theName isEqualToString:@"rotate"] | [theName isEqualToString:@"r"])
+            {
+            theTransform = CATransform3DRotate(theTransform,
+                GetNextArgument(theParameters[0]),
+                GetNextArgument(theParameters[1]),
+                GetNextArgument(theParameters[2]),
+                GetNextArgument(theParameters[3])
+                );
+            }
+        else if ([theName isEqualToString:@"identity"] | [theName isEqualToString:@"i"])
+            {
+            // Nothing to do here. Identity is essentially a nop.
+            }
+        else
+            {
+            if (outError)
+                {
+                *outError = [NSError errorWithDomain:kNIMTransformDSLErrorDomain code:-1 userInfo:NULL];
+                }
+            return NO;
             }
         }
 
@@ -169,8 +213,31 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
     return YES;
     }
 
-
 #pragma mark -
+
+- (BOOL)scanner:(NSScanner *)inScanner scanFunctions:(NSArray **)outFunctions
+    {
+    NSMutableArray *theFunctions = [NSMutableArray array];
+    while ([inScanner isAtEnd] == NO)
+        {
+        NSDictionary *theFunction = NULL;
+        if ([self scanner:inScanner scanFunction:&theFunction] == YES)
+            {
+            [theFunctions addObject:theFunction];
+            }
+        else if ([inScanner scanString:@"|" intoString:NULL] == NO)
+            {
+            break;
+            }
+        }
+
+    if (outFunctions != NULL)
+        {
+        *outFunctions = theFunctions;
+        }
+
+    return YES;
+    }
 
 - (BOOL)scanner:(NSScanner *)inScanner scanFunction:(NSDictionary **)outFunction
     {
@@ -190,7 +257,7 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
         }
 
     NSArray *theArray = NULL;
-    if ([self scanner:inScanner scanArrayOfNumbers:&theArray] == NO)
+    if ([self scanner:inScanner scanArrayOfParameters:&theArray] == NO)
         {
         inScanner.scanLocation = theSavedLocation;
         return NO;
@@ -210,7 +277,7 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
     return YES;
     }
 
-- (BOOL)scanner:(NSScanner *)inScanner scanArrayOfNumbers:(NSArray **)outNumbers
+- (BOOL)scanner:(NSScanner *)inScanner scanArrayOfParameters:(NSArray **)outNumbers
     {
     BOOL theResult = NO;
 
@@ -221,12 +288,18 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
     while (inScanner.isAtEnd == NO)
         {
         double theDouble;
-        if ([inScanner scanDouble:&theDouble] == NO)
+        if ([inScanner scanDouble:&theDouble] == YES)
+            {
+            [theArray addObject:@(theDouble)];
+            }
+        else if ([inScanner scanString:@"%f" intoString:NULL] == YES)
+            {
+            [theArray addObject:@"%f"];
+            }
+        else
             {
             break;
             }
-
-        [theArray addObject:@(theDouble)];
 
         if ([inScanner scanString:@"," intoString:NULL] == NO)
             {
