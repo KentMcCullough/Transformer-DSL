@@ -10,10 +10,6 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-extern NSString *const kNIMTransformDSLErrorDomain;
-extern NSString *const kNIMTransformDSLParseException;
-extern NSString *const kNIMTransformDSLNotAffineException;
-
 @interface NIMTransformFormatter : NSObject
 
 + (instancetype)formatterWithFormat:(NSString *)inFormat, ...;
@@ -30,3 +26,8 @@ extern NSString *const kNIMTransformDSLNotAffineException;
 
 extern CATransform3D CATransform3DMakeWithFormat(NSString *inFormat, ...);
 extern CATransform3D CATransform3DWithFormat(CATransform3D inTransform, NSString *inFormat, ...);
+
+extern NSString *const kNIMTransformDSLErrorDomain;
+extern NSString *const kNIMTransformDSLParseException;
+extern NSString *const kNIMTransformDSLNotAffineException;
+

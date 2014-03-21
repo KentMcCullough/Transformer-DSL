@@ -15,13 +15,16 @@ NSString *const kNIMTransformDSLParseException = @"kNIMTransformDSLParseExceptio
 NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffineException";
 
 @interface NIMTransformFormatter ()
-@property (readwrite, nonatomic, copy) NSString *format;
-@property (readwrite, nonatomic, copy) NSArray *arguments;
+@property (readonly, nonatomic, copy) NSString *format;
+@property (readonly, nonatomic, strong) NSArray *arguments;
+@property (readonly, nonatomic, strong) NSArray *operations;
 @end
 
 #pragma mark -
 
 @implementation NIMTransformFormatter
+
+@synthesize operations = _operations;
 
 + (NSCache *)_transformsCache
     {
@@ -44,7 +47,6 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
         });
     return gCache;
     }
-
 
 + (instancetype)formatterWithFormat:(NSString *)inFormat, ...
     {
@@ -87,9 +89,25 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
             }
         while (theFoundRange.location != NSNotFound);
 
-        _arguments = [theArguments copy];
+        _arguments = theArguments;
         }
     return self;
+    }
+
+- (NSArray *)operations
+    {
+    if (_operations == NULL)
+        {
+        NSArray *theOperations = [[NIMTransformFormatter _operationsCache] objectForKey:self.format];
+        if (theOperations == NULL)
+            {
+            NSScanner *theScanner = [NSScanner scannerWithString:self.format];
+            [self _scanner:theScanner scanFunctions:&theOperations];
+            [[NIMTransformFormatter _operationsCache] setObject:theOperations forKey:self.format];
+            }
+        _operations = theOperations;
+        }
+    return(_operations);
     }
 
 - (CATransform3D)CATransform3D
@@ -136,14 +154,6 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
     {
     CATransform3D theTransform = *ioTransform;
 
-    NSArray *theFunctions = [[NIMTransformFormatter _operationsCache] objectForKey:self.format];
-    if (theFunctions == NULL)
-        {
-        NSScanner *theScanner = [NSScanner scannerWithString:self.format];
-        [self scanner:theScanner scanFunctions:&theFunctions];
-        [[NIMTransformFormatter _operationsCache] setObject:theFunctions forKey:self.format];
-        }
-
     __block NSUInteger nextArgument = 0;
     CGFloat (^GetNextArgument)(id inParameter) = ^(id inParameter) {
         if ([inParameter isKindOfClass:[NSNumber class]] == YES)
@@ -161,10 +171,10 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
             }
         };
 
-    for (NSDictionary *theFunction in theFunctions)
+    for (NSDictionary *theOperation in self.operations)
         {
-        NSString *theName = theFunction[@"name"];
-        NSArray *theParameters = theFunction[@"parameters"];
+        NSString *theName = theOperation[@"name"];
+        NSArray *theParameters = theOperation[@"parameters"];
 
         if ([theName isEqualToString:@"translate"] || [theName isEqualToString:@"t"])
             {
@@ -215,13 +225,13 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
 
 #pragma mark -
 
-- (BOOL)scanner:(NSScanner *)inScanner scanFunctions:(NSArray **)outFunctions
+- (BOOL)_scanner:(NSScanner *)inScanner scanFunctions:(NSArray **)outFunctions
     {
     NSMutableArray *theFunctions = [NSMutableArray array];
     while ([inScanner isAtEnd] == NO)
         {
         NSDictionary *theFunction = NULL;
-        if ([self scanner:inScanner scanFunction:&theFunction] == YES)
+        if ([self _scanner:inScanner scanFunction:&theFunction] == YES)
             {
             [theFunctions addObject:theFunction];
             }
@@ -239,7 +249,7 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
     return YES;
     }
 
-- (BOOL)scanner:(NSScanner *)inScanner scanFunction:(NSDictionary **)outFunction
+- (BOOL)_scanner:(NSScanner *)inScanner scanFunction:(NSDictionary **)outFunction
     {
     NSUInteger theSavedLocation = inScanner.scanLocation;
 
@@ -257,7 +267,7 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
         }
 
     NSArray *theArray = NULL;
-    if ([self scanner:inScanner scanArrayOfParameters:&theArray] == NO)
+    if ([self _scanner:inScanner scanArrayOfParameters:&theArray] == NO)
         {
         inScanner.scanLocation = theSavedLocation;
         return NO;
@@ -277,7 +287,7 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
     return YES;
     }
 
-- (BOOL)scanner:(NSScanner *)inScanner scanArrayOfParameters:(NSArray **)outNumbers
+- (BOOL)_scanner:(NSScanner *)inScanner scanArrayOfParameters:(NSArray **)outNumbers
     {
     BOOL theResult = NO;
 
