@@ -59,6 +59,8 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
 
 - (instancetype)initWithFormat:(NSString *)inFormat, ...
     {
+    NSParameterAssert(inFormat != NULL);
+
     va_list argList;
     va_start(argList, inFormat);
     self = [self initWithFormat:inFormat arguments:argList];
@@ -68,6 +70,8 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
 
 - (instancetype)initWithFormat:(NSString *)inFormat arguments:(va_list)argList
     {
+    NSParameterAssert(inFormat != NULL);
+
     if ((self = [super init]) != NULL)
         {
         _format = [inFormat copy];
@@ -98,6 +102,8 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
     {
     if (_operations == NULL)
         {
+        NSParameterAssert(self.format != NULL);
+
         NSArray *theOperations = [[NIMTransformFormatter _operationsCache] objectForKey:self.format];
         if (theOperations == NULL)
             {
@@ -117,10 +123,10 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
 
 - (CATransform3D)CATransform3DWithBaseTransform:(CATransform3D)inBaseTransform
     {
-    NSValue *theValue = [[NIMTransformFormatter _transformsCache] objectForKey:self.format];
-    if (theValue != NULL)
+    NSValue *theTransformValue = [[NIMTransformFormatter _transformsCache] objectForKey:self.format];
+    if (theTransformValue != NULL)
         {
-        return [theValue CATransform3DValue];
+        return [theTransformValue CATransform3DValue];
         }
 
     CATransform3D theTransform = inBaseTransform;
@@ -130,6 +136,7 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
         [[NSException exceptionWithName:kNIMTransformDSLParseException reason:@"Failed to parse format string" userInfo:NULL] raise];
         }
 
+    // We only cache if we have zero arguments. We obviously can't cache dynamic formats.
     if (self.arguments.count == 0)
         {
         [[NIMTransformFormatter _transformsCache] setObject:[NSValue valueWithCATransform3D:theTransform] forKey:self.format];
@@ -158,7 +165,8 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
 
 - (BOOL)_transform:(CATransform3D *)ioTransform error:(NSError **)outError
     {
-    CATransform3D theTransform = *ioTransform;
+    NSParameterAssert(ioTransform != NULL);
+    NSParameterAssert(self.operations != NULL);
 
     __block NSUInteger nextArgument = 0;
     CGFloat (^GetNextArgument)(id inParameter) = ^(id inParameter) {
@@ -176,6 +184,8 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
             return(0.0);
             }
         };
+
+    CATransform3D theTransform = *ioTransform;
 
     for (NSDictionary *theOperation in self.operations)
         {
@@ -233,6 +243,8 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
 
 - (BOOL)_scanner:(NSScanner *)inScanner scanFunctions:(NSArray **)outFunctions
     {
+    NSParameterAssert(inScanner != NULL);
+
     NSMutableArray *theFunctions = [NSMutableArray array];
     while ([inScanner isAtEnd] == NO)
         {
@@ -257,6 +269,8 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
 
 - (BOOL)_scanner:(NSScanner *)inScanner scanFunction:(NSDictionary **)outFunction
     {
+    NSParameterAssert(inScanner != NULL);
+
     NSUInteger theSavedLocation = inScanner.scanLocation;
 
     NSString *theName = NULL;
@@ -295,6 +309,8 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
 
 - (BOOL)_scanner:(NSScanner *)inScanner scanArrayOfParameters:(NSArray **)outNumbers
     {
+    NSParameterAssert(inScanner != NULL);
+
     BOOL theResult = NO;
 
     NSMutableArray *theArray = [NSMutableArray array];
