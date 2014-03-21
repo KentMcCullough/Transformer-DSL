@@ -21,6 +21,7 @@
 - (CATransform3D)CATransform3DWithBaseTransform:(CATransform3D)inBaseTransform;
 
 - (CGAffineTransform)CGAffineTransform;
+- (CGAffineTransform)CGAffineTransformWithBaseTransform:(CGAffineTransform)inBaseTransform;
 
 @end
 

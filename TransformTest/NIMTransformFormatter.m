@@ -140,7 +140,13 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
 
 - (CGAffineTransform)CGAffineTransform
     {
-    CATransform3D theTransform = [self CATransform3D];
+    return [self CGAffineTransformWithBaseTransform:CGAffineTransformIdentity];
+    }
+
+- (CGAffineTransform)CGAffineTransformWithBaseTransform:(CGAffineTransform)inBaseTransform
+    {
+    CATransform3D theBaseTransform = CATransform3DMakeAffineTransform(inBaseTransform);
+    CATransform3D theTransform = [self CATransform3DWithBaseTransform:theBaseTransform];
     if (!CATransform3DIsAffine(theTransform))
         {
         [[NSException exceptionWithName:kNIMTransformDSLNotAffineException reason:@"Cannot convert non-afine transformation to an affine one." userInfo:NULL] raise];
