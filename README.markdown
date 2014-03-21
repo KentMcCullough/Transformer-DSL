@@ -40,6 +40,7 @@ Currently it looks (in theory) like this in Backus–Naur Form:
     <operation>       ::= <operation-name> "(" <parameter-list> ")"
     <concat-operator> ::= "|"
     <operation-list>  ::= <operation> | <concat-operator> <operation-list>
+    (this is pretty incorrect BNF - dont rely on it yet)
 
 The key parts to realise are operations look a bit like functions and are concatenated using the | (vertical bar) character.
 
