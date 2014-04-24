@@ -64,8 +64,8 @@
 		45D4112F18C90EA400613276 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		45D4113218C90EA400613276 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		45D4113518C90EA400613276 /* TransformTest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TransformTest-Prefix.pch"; sourceTree = "<group>"; };
-		45D4113D18C90EC100613276 /* NIMTransformFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIMTransformFormatter.h; sourceTree = "<group>"; };
-		45D4113E18C90EC100613276 /* NIMTransformFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIMTransformFormatter.m; sourceTree = "<group>"; };
+		45D4113D18C90EC100613276 /* NIMTransformFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NIMTransformFormatter.h; path = ../NIMTransformFormatter/NIMTransformFormatter.h; sourceTree = "<group>"; };
+		45D4113E18C90EC100613276 /* NIMTransformFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NIMTransformFormatter.m; path = ../NIMTransformFormatter/NIMTransformFormatter.m; sourceTree = "<group>"; };
 		45FFB89618DB56C900EB68F1 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = SOURCE_ROOT; };
 		45FFB89718DB675800EB68F1 /* README.markdown */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.markdown; sourceTree = SOURCE_ROOT; };
 		45FFB89C18DB67C200EB68F1 /* Unit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Unit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,9 +97,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		37CA919919093A3F000F00A0 /* NIMTransformFormatter */ = {
+			isa = PBXGroup;
+			children = (
+				45D4113D18C90EC100613276 /* NIMTransformFormatter.h */,
+				45D4113E18C90EC100613276 /* NIMTransformFormatter.m */,
+			);
+			name = NIMTransformFormatter;
+			path = TransformTest;
+			sourceTree = "<group>";
+		};
 		45D4112318C90EA400613276 = {
 			isa = PBXGroup;
 			children = (
+				45FFB8B418DB6D0E00EB68F1 /* Transformer-DSL.podspec */,
+				37CA919919093A3F000F00A0 /* NIMTransformFormatter */,
 				45D4113118C90EA400613276 /* TransformTest */,
 				45FFB89F18DB67C200EB68F1 /* Unit Tests */,
 				45D4112E18C90EA400613276 /* Frameworks */,
@@ -130,10 +142,7 @@
 			children = (
 				45FFB89718DB675800EB68F1 /* README.markdown */,
 				45FFB89618DB56C900EB68F1 /* LICENSE */,
-				45FFB8B418DB6D0E00EB68F1 /* Transformer-DSL.podspec */,
 				45D4113218C90EA400613276 /* main.m */,
-				45D4113D18C90EC100613276 /* NIMTransformFormatter.h */,
-				45D4113E18C90EC100613276 /* NIMTransformFormatter.m */,
 				45D4113418C90EA400613276 /* Supporting Files */,
 			);
 			path = TransformTest;
