@@ -8,6 +8,6 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = "7.0"
   s.osx.deployment_target = "10.8"
   s.source       = { :git => "https://github.com/schwa/Transformer-DSL.git", :tag => "0.0.2" }
-  s.source_files  = "NIMTransformFormatter.{h,m}"
+  s.source_files  = "TransformTest/NIMTransformFormatter.{h,m}"
   s.requires_arc = true
 end
