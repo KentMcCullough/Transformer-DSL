@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "Transformer-DSL"
-  s.version      = "0.0.3"
+  s.version      = "0.0.4"
   s.summary      = "A domain specific language for CoreAnimation Transformations."
   s.homepage     = "https://github.com/schwa/Transformer-DSL"
   s.license      = { :type => "BSD 2-Clause", :file => "LICENSE" }
