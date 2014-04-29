@@ -87,7 +87,7 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
 
             if (theFoundRange.location != NSNotFound)
                 {
-                CGFloat theArgument = va_arg(argList, CGFloat);
+                CGFloat theArgument = va_arg(argList, double);
                 [theArguments addObject:@(theArgument)];
                 }
             }
@@ -172,16 +172,16 @@ NSString *const kNIMTransformDSLNotAffineException = @"kNIMTransformDSLNotAffine
     CGFloat (^GetNextArgument)(id inParameter) = ^(id inParameter) {
         if ([inParameter isKindOfClass:[NSNumber class]] == YES)
             {
-            return([inParameter doubleValue]);
+            return((CGFloat)[inParameter doubleValue]);
             }
         else if (nextArgument < self.arguments.count)
             {
-            return([self.arguments[nextArgument++] doubleValue]);
+            return((CGFloat)[self.arguments[nextArgument++] doubleValue]);
             }
         else
             {
             NSParameterAssert(0);
-            return(0.0);
+            return((CGFloat)0.0);
             }
         };
 
